@@ -1,8 +1,8 @@
 package com.example.casaDragon.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-import java.util.UUID;
 @Entity
 @Table(name = "tabla_dragon")
 public class Dragon {
@@ -23,7 +23,9 @@ public class Dragon {
     @Column(name = "numero_victorias_dragon")
     private Integer numeroVictorias;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "fk_jinete",referencedColumnName = "id")
+    @JsonBackReference
     Jinete jinete;
 
 

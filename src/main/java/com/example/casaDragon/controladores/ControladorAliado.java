@@ -1,13 +1,15 @@
 package com.example.casaDragon.controladores;
 
+import com.example.casaDragon.models.Aliado;
 import com.example.casaDragon.servicios.AliadoServicio;
 import com.example.casaDragon.servicios.DragonServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("casaaliadoapi/v1/dragon")
+@RequestMapping("casaaliadoapi/v1/aliado")
 public class ControladorAliado {
 
     //Inyecta el servicio
@@ -15,18 +17,50 @@ public class ControladorAliado {
     AliadoServicio aliadoServicio;
 
     @PostMapping
-    public ResponseEntity<?> guardarAliado(){
-        return  null;
+    public ResponseEntity<?> guardarAliado(@RequestBody Aliado datosClienteAliado){
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(aliadoServicio.agregarAliado(datosClienteAliado));
+
+        }catch (Exception error){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
     }
 
     @GetMapping
     public ResponseEntity<?> buscarAliados(){
-        return  null;
+        try {
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(aliadoServicio.buscarAliados());
+
+        }catch (Exception error) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
     }
 
-    @GetMapping
-    public ResponseEntity<?> buscarAliado(){
-        return  null;
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarAliado(@PathVariable Integer id){
+        try {
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(aliadoServicio.buscarAliadoPorId(id));
+
+        }catch (Exception error) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
     }
 
     @PutMapping

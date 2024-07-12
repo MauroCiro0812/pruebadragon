@@ -1,7 +1,9 @@
 package com.example.casaDragon.controladores;
 
+import com.example.casaDragon.models.Dragon;
 import com.example.casaDragon.servicios.DragonServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,18 +16,51 @@ public class ControladorDragon {
     DragonServicio dragonServicio;
 
     @PostMapping
-    public ResponseEntity<?> guardarDragon(){
-        return  null;
+    public ResponseEntity<?> guardarDragon(@RequestBody Dragon datosClienteDragon){
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(dragonServicio.agregarDragon(datosClienteDragon));
+
+        }catch (Exception error){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
     }
 
     @GetMapping
     public ResponseEntity<?> buscarDragones(){
-        return  null;
+        try {
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(dragonServicio.buscarDragones());
+
+        }catch (Exception error) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
+
     }
 
-    @GetMapping
-    public ResponseEntity<?> buscarDragon(){
-        return  null;
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarDragon(@PathVariable Integer id){
+        try {
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(dragonServicio.buscarDragonPorId(id));
+
+        }catch (Exception error) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+
+        }
     }
 
     @PutMapping
