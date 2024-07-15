@@ -1,6 +1,8 @@
 package com.example.casaDragon.servicios;
 
+import com.example.casaDragon.DTO.JineteDTO;
 import com.example.casaDragon.helpers.MensajeServicios;
+import com.example.casaDragon.mapas.IMapaJinete;
 import com.example.casaDragon.models.Dragon;
 import com.example.casaDragon.models.Jinete;
 import com.example.casaDragon.repositorios.JineteRepositorio;
@@ -16,13 +18,15 @@ public class JineteServicio {
     @Autowired
     JineteRepositorio jineteRepositorio;
 
+    @Autowired
+    IMapaJinete iMapaJinete;
     //Agregar un jinete
-    public  Jinete agregarJinete(Jinete datosJinete) throws Exception {
+    public JineteDTO agregarJinete(Jinete datosJinete) throws Exception {
 
         //Llamar a las validaciones
         try {
 
-            return jineteRepositorio.save(datosJinete);
+            return iMapaJinete.mapearJinete(jineteRepositorio.save(datosJinete));
 
         }catch (Exception error){
 
@@ -31,9 +35,9 @@ public class JineteServicio {
     }
 
     //BuscarJinetes
-    public List<Jinete> buscarJinetes() throws Exception {
+    public List<JineteDTO> buscarJinetes() throws Exception {
         try {
-            return jineteRepositorio.findAll();
+            return iMapaJinete.mapearListaJinetes(jineteRepositorio.findAll());
 
         }catch (Exception error){
             throw  new Exception(error.getMessage());
@@ -41,13 +45,13 @@ public class JineteServicio {
     }
 
     //BuscarUnJineteLlavePrimaria
-    public Jinete buscarJinetePorId(Integer idJinete) throws  Exception{
+    public JineteDTO buscarJinetePorId(Integer idJinete) throws  Exception{
 
         try {
 
             Optional<Jinete> jineteEncontrado =  jineteRepositorio.findById(idJinete);
             if(jineteEncontrado.isPresent()){
-                return jineteEncontrado.get();
+                return iMapaJinete.mapearJinete(jineteEncontrado.get());
             }else {
                 throw  new Exception(MensajeServicios.JINETE_NO_ENCONTRADO.getMensaje());
             }
@@ -60,7 +64,7 @@ public class JineteServicio {
 
 
     //EditarInformacionJinete
-    public Jinete modificarJinete(Integer idJinete, Jinete datosNuevosJinete) throws  Exception{
+    public JineteDTO modificarJinete(Integer idJinete, Jinete datosNuevosJinete) throws  Exception{
         try {
             //Buscar el jinete que voy a editar
             Optional<Jinete>jineteEncontrado = jineteRepositorio.findById(idJinete);
@@ -71,7 +75,7 @@ public class JineteServicio {
                 //Guardo los datos nuevos del dragon utilizando el mismo objeto
                 jinete.setEdad(datosNuevosJinete.getEdad());
 
-                return jineteRepositorio.save(jinete);
+                return iMapaJinete.mapearJinete(jineteRepositorio.save(jinete));
 
             }else {
                 throw  new Exception(MensajeServicios.DRAGON_NO_ENCONTRADO.getMensaje());

@@ -1,6 +1,8 @@
 package com.example.casaDragon.servicios;
 
+import com.example.casaDragon.DTO.DragonDTO;
 import com.example.casaDragon.helpers.MensajeServicios;
+import com.example.casaDragon.mapas.IMapaDragon;
 import com.example.casaDragon.models.Dragon;
 import com.example.casaDragon.repositorios.DragonRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +17,23 @@ public class DragonServicio {
     @Autowired
     DragonRepositorio dragonRepositorio;
 
+    @Autowired
+    IMapaDragon iMapaDragon;
+
     //AgregarUnDragon
-    public Dragon agregarDragon(Dragon datosDragon) throws Exception{
+    public DragonDTO agregarDragon(Dragon datosDragon) throws Exception{
         //Llamar a las validaciones
         try {
-            return dragonRepositorio.save(datosDragon);
+            return iMapaDragon.mapearDragon(dragonRepositorio.save(datosDragon));
 
         }catch(Exception error){
             throw  new Exception(error.getMessage());
         }
     }
     //BuscarTodosDragones
-    public List<Dragon> buscarDragones() throws Exception {
+    public List<DragonDTO> buscarDragones() throws Exception {
         try {
-            return dragonRepositorio.findAll();
+            return iMapaDragon.mapearListaDragones(dragonRepositorio.findAll());
 
         }catch (Exception error){
             throw  new Exception(error.getMessage());
@@ -36,13 +41,13 @@ public class DragonServicio {
     }
 
     //BuscarUnDragonLlavePrimaria
-    public Dragon buscarDragonPorId(Integer idDragon) throws  Exception{
+    public DragonDTO buscarDragonPorId(Integer idDragon) throws  Exception{
 
         try {
 
             Optional<Dragon>dragonEncontrado =  dragonRepositorio.findById(idDragon);
             if(dragonEncontrado.isPresent()){
-                return dragonEncontrado.get();
+                return iMapaDragon.mapearDragon(dragonEncontrado.get());
             }else {
                 throw  new Exception(MensajeServicios.DRAGON_NO_ENCONTRADO.getMensaje());
             }
@@ -55,7 +60,7 @@ public class DragonServicio {
 
 
     //EditarInformacionDargon
-    public Dragon modificarDragon(Integer idDragon, Dragon datosNuevosDragon) throws  Exception{
+    public DragonDTO modificarDragon(Integer idDragon, Dragon datosNuevosDragon) throws  Exception{
         try {
             //Buscar el dragon que voy a editar
             Optional<Dragon>dragonEncontrado = dragonRepositorio.findById(idDragon);
@@ -66,7 +71,7 @@ public class DragonServicio {
                 //Guardo los datos nuevos del dragon utilizando el mismo objeto
                 dragon.setEdad(datosNuevosDragon.getEdad());
 
-                return dragonRepositorio.save(dragon);
+                return iMapaDragon.mapearDragon(dragonRepositorio.save(dragon));
 
             }else {
                 throw  new Exception(MensajeServicios.DRAGON_NO_ENCONTRADO.getMensaje());
