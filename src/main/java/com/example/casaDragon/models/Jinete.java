@@ -17,13 +17,13 @@ public class Jinete {
     private Integer id;
 
     @Column(name = "nombres_jinete",nullable = true,length = 50)
-    private String nombres;
+    private String nombres;//maximo 50 caracteres y solo se aceptan letras y espacios
 
     @Column(name = "edad_jinete")
-    private Integer edad;
+    private Integer edad;//solo numeros positivos
 
     @Column(name = "fecha_montura")
-    private LocalDate fechaMontura;
+    private LocalDate fechaMontura;//dd/MM/YYYY
 
     @OneToMany(mappedBy = "jinete")
     @JsonManagedReference

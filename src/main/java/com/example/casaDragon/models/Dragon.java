@@ -12,16 +12,16 @@ public class Dragon {
     private Integer id;
 
     @Column(name = "nombres_dragon",nullable = true,length = 50)
-    private String nombres;
+    private String nombres;//maximo 20 caracteres y solo letras y espacios
 
     @Column(name = "edad_dragon")
-    private Integer edad;
+    private Integer edad;//solo numeros positivos y maximo 2000
 
     @Column(name = "altura_dragon")
-    private Double altura;
+    private Double altura;//solo numeros positivos
 
     @Column(name = "numero_victorias_dragon")
-    private Integer numeroVictorias;
+    private Integer numeroVictorias;//solo numeros positivos
 
     @ManyToOne
     @JoinColumn(name = "fk_jinete",referencedColumnName = "id")

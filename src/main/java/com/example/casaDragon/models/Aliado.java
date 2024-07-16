@@ -13,13 +13,13 @@ public class Aliado {
     private Integer id;
 
     @Column(name = "nombres_aliado",nullable = true,length = 50)
-    private String nombres;
+    private String nombres;//validar letras espacios y maximo 50 caracteres
 
     @Column(name = "ubicacion_aliado")
-    private String ubicacion;
+    private String ubicacion;//maximo 70 caracteres
 
     @Column(name = "aportes_aliado")
-    private Double aporte;
+    private Double aporte;//solo numeros positivos
 
     @ManyToOne
     @JoinColumn(name = "fk_jinete",referencedColumnName = "id")
